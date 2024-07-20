@@ -8,10 +8,41 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   // ข้อมูลทดสอบ
   List<Map<String, dynamic>> machines = [
-    {"id": 1, "status": "สามารถใช้งานได้", "time_left": 0, "coins_inserted": 0},
-    {"id": 2, "status": "สามารถใช้งานได้", "time_left": 0, "coins_inserted": 2},
-    {"id": 3, "status": "ใช้งานอยู่", "time_left": 30, "coins_inserted": 3},
-    {"id": 4, "status": "ใช้งานอยู่", "time_left": 1, "coins_inserted": 3},
+    {
+      "id": 1,
+      "status": "สามารถใช้งานได้",
+      "time_left": 0,
+      "coins_inserted": 0,
+      "alert": false
+    },
+    {
+      "id": 2,
+      "status": "สามารถใช้งานได้",
+      "time_left": 0,
+      "coins_inserted": 2,
+      "alert": false
+    },
+    {
+      "id": 3,
+      "status": "ใช้งานอยู่",
+      "time_left": 30,
+      "coins_inserted": 3,
+      "alert": false
+    },
+    {
+      "id": 4,
+      "status": "ใช้งานอยู่",
+      "time_left": 1,
+      "coins_inserted": 3,
+      "alert": true
+    },
+    {
+      "id": 5,
+      "status": "ซ่อมบำรุง",
+      "time_left": 0,
+      "coins_inserted": 0,
+      "alert": false
+    },
   ];
 
   // ฟังก์ชันจำลองการใส่เหรียญและเริ่มเครื่องซักผ้า
@@ -81,7 +112,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         machine['time_left'] = 0.5;
                         machine['coins_inserted'] = 3;
                         machine['status'] = 'ใช้งานอยู่';
-                                                
                       });
                     },
                     child: Text('ทดสอบเวลาเหลือน้อยกว่า 1 นาที'),
