@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:laundromat_flutter/language_povider.dart';
+import 'package:laundromat_flutter/screen/Notification_page.dart';
+import 'package:laundromat_flutter/screen/find_a_branch_page.dart';
+import 'package:laundromat_flutter/screen/home_page.dart';
 import 'package:laundromat_flutter/screen/report_screen.dart';
 import 'package:provider/provider.dart';
+
+import '../language_povider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,18 +15,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List pages_Drawer = [
-    {
-      'id': 1,
-      'title_en': 'Home',
-      'title_th': 'หน้าหลัก',
-      'page': const HomeScreen()
-    },
-    {'id': 2, 'title_en': 'Find a branch', 'title_th': 'ค้นหาสาขา'},
-    {'id': 3, 'title_en': 'Report', 'title_th': 'รายงานปัญหา'},
-    {'id': 4, 'title_en': 'Log out', 'title_th': 'ออกจากระบบ'},
-  ];
-
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -35,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final languageProvider = Provider.of<LanguageProvider>(context);
     final isEnglish = languageProvider.isEnglish;
+
     return Scaffold(
       drawer: Drawer(
         child: ListView(
@@ -127,7 +120,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: const TextStyle(color: Colors.black),
               ),
               onTap: () {
-                Navigator.pop(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ReportScreen()),
@@ -143,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () {
                 Navigator.pop(context);
                 setState(() {
-                  _selectedIndex = 3;
+                  _selectedIndex = 1;
                 });
               },
             ),
@@ -201,6 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       appBar: AppBar(
+        centerTitle: true,
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -214,29 +207,29 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Center(
         child: _selectedIndex == 0
-            ? Text('Home Screen')
+            ? HomePage()
             : _selectedIndex == 1
-                ? Text('Search Screen')
+                ? FindABranchPage()
                 : _selectedIndex == 2
-                    ? Text('Notifications Screen')
-                    : Text('Profile Screen'),
+                    ? NotificationPage()
+                    : null
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.blue[400],
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.white,
-        items: const <BottomNavigationBarItem>[
+        items:  <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: isEnglish ? 'Home' : 'หน้าหลัก',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.pin_drop),
-            label: 'Search',
+            label: isEnglish ? 'Find a branch' : 'ค้นหาสาขา',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
-            label: 'Notifications',
+            label: isEnglish ? 'Notification' : 'แจ้งเตือน',
           ),
         ],
         currentIndex: _selectedIndex,
