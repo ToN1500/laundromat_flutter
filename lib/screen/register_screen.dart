@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:laundromat_flutter/language_povider.dart';
+import 'package:laundromat_flutter/screen/login_screen.dart';
 import 'package:provider/provider.dart';
-import 'register_screen.dart';
-import 'home_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final _username = TextEditingController();
-  final _password = TextEditingController();
-  bool _obscureText = true;
-
+  final _password_frist = TextEditingController();
+  final _password_second = TextEditingController();
+  bool _obscureText_frist = true;
+  bool _obscureText_second = true;
   @override
   Widget build(BuildContext context) {
     final languageProvider = Provider.of<LanguageProvider>(context);
     final isEnglish = languageProvider.isEnglish;
-
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -68,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: Text(
-                          isEnglish ? 'Please Login' : 'โปรดเข้าสู่ระบบ',
+                          isEnglish ? 'Create Account' : 'สร้างบัญชี',
                           style: const TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.bold,
@@ -107,21 +106,63 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 30, vertical: 10),
                         child: TextFormField(
-                          controller: _password,
-                          obscureText: _obscureText,
+                          controller: _password_frist,
+                          obscureText: _obscureText_frist,
                           decoration: InputDecoration(
                             prefixIcon:
                                 const Icon(Icons.password, color: Colors.white),
                             suffixIcon: IconButton(
                               icon: Icon(
-                                _obscureText
+                                _obscureText_frist
                                     ? Icons.visibility
                                     : Icons.visibility_off,
                                 color: Colors.white,
                               ),
                               onPressed: () {
                                 setState(() {
-                                  _obscureText = !_obscureText;
+                                  _obscureText_frist = !_obscureText_frist;
+                                });
+                              },
+                            ),
+                            labelText: isEnglish ? 'confirm password' : 'ยืนยันรหัสผ่าน',
+                            labelStyle: const TextStyle(color: Colors.white),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(color: Colors.white),
+                            ),
+                            fillColor: Colors.white.withOpacity(0.1),
+                            filled: true,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(color: Colors.white),
+                            ),
+                          ),
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 30, vertical: 10),
+                        child: TextFormField(
+                          controller: _password_second,
+                          obscureText: _obscureText_second,
+                          decoration: InputDecoration(
+                            prefixIcon:
+                                const Icon(Icons.password, color: Colors.white),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscureText_second
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _obscureText_second = !_obscureText_second;
                                 });
                               },
                             ),
@@ -157,33 +198,39 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => HomeScreen(),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          isEnglish ? 'Login' : 'เข้าสู่ระบบ',
-                          style: GoogleFonts.prompt(
-                              fontSize: 15, color: Colors.blue),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => RegisterScreen(),
+                              builder: (context) => LoginScreen(),
                             ),
                           );
                         },
                         child: Text(
                           isEnglish ? 'Create Account' : 'สร้างบัญชี',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            decoration: TextDecoration.underline,
-                          ),
+                          style: GoogleFonts.prompt(
+                              fontSize: 15, color: Colors.blue),
                         ),
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(isEnglish ? 'Already have an account? ' : 'มีบัญชีแล้ว? ', style: TextStyle(color: Colors.white)),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LoginScreen(),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              isEnglish ? 'Login' : 'เข้าสู่ระบบ',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
