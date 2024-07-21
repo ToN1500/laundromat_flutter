@@ -1,138 +1,246 @@
 import 'package:flutter/material.dart';
+import 'package:laundromat_flutter/language_povider.dart';
+import 'package:laundromat_flutter/screen/report_screen.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // ข้อมูลทดสอบ
-  List<Map<String, dynamic>> machines = [
+  List pages_Drawer = [
     {
-      "id": 1,
-      "status": "สามารถใช้งานได้",
-      "time_left": 0,
-      "coins_inserted": 0,
-      "alert": false
+      'id': 1,
+      'title_en': 'Home',
+      'title_th': 'หน้าหลัก',
+      'page': const HomeScreen()
     },
-    {
-      "id": 2,
-      "status": "สามารถใช้งานได้",
-      "time_left": 0,
-      "coins_inserted": 2,
-      "alert": false
-    },
-    {
-      "id": 3,
-      "status": "ใช้งานอยู่",
-      "time_left": 30,
-      "coins_inserted": 3,
-      "alert": false
-    },
-    {
-      "id": 4,
-      "status": "ใช้งานอยู่",
-      "time_left": 1,
-      "coins_inserted": 3,
-      "alert": true
-    },
-    {
-      "id": 5,
-      "status": "ซ่อมบำรุง",
-      "time_left": 0,
-      "coins_inserted": 0,
-      "alert": false
-    },
+    {'id': 2, 'title_en': 'Find a branch', 'title_th': 'ค้นหาสาขา'},
+    {'id': 3, 'title_en': 'Report', 'title_th': 'รายงานปัญหา'},
+    {'id': 4, 'title_en': 'Log out', 'title_th': 'ออกจากระบบ'},
   ];
 
-  // ฟังก์ชันจำลองการใส่เหรียญและเริ่มเครื่องซักผ้า
-  void insertCoin(int machineId) {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
     setState(() {
-      for (var machine in machines) {
-        if (machine['id'] == machineId) {
-          machine['coins_inserted'] += 1;
-          if (machine['coins_inserted'] == 3) {
-            // สมมุติว่า 3 เหรียญสามารถเริ่มเครื่องได้
-            machine['status'] = 'ใช้งานอยู่';
-            machine['time_left'] = 30; // สมมุติว่าเครื่องจะทำงาน 30 นาที
-          }
-        }
-      }
+      _selectedIndex = index;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final languageProvider = Provider.of<LanguageProvider>(context);
+    final isEnglish = languageProvider.isEnglish;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Laundromat'),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.blue[300]!, Colors.blue[500]!],
+                  begin: Alignment.bottomRight,
+                  end: Alignment.topLeft,
+                ),
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.only(
+                        top: 0, bottom: 0, right: 0, left: 0),
+                    alignment: Alignment.topRight,
+                    child: PopupMenuButton<String>(
+                      onSelected: (String value) {
+                        languageProvider.setLanguage(value == 'English');
+                      },
+                      itemBuilder: (BuildContext context) {
+                        return {'ไทย', 'English'}.map((String choice) {
+                          return PopupMenuItem<String>(
+                            value: choice,
+                            child: Text(choice),
+                          );
+                        }).toList();
+                      },
+                      icon: const Icon(Icons.language, color: Colors.white),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 40,
+                        backgroundImage: AssetImage('images/logo.png'),
+                      ),
+                      SizedBox(width: 15),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Username',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text(
+                isEnglish ? 'Home' : 'หน้าหลัก',
+                style: const TextStyle(color: Colors.black),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  _selectedIndex = 0;
+                });
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.pin_drop),
+              title: Text(
+                isEnglish ? 'Find a branch' : 'ค้นหาสาขา',
+                style: const TextStyle(color: Colors.black),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  _selectedIndex = 1;
+                });
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.report),
+              title: Text(
+                isEnglish ? 'Report' : 'รายงานปัญหา',
+                style: const TextStyle(color: Colors.black),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ReportScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text(
+                isEnglish ? 'Settings' : 'ตั้งค่า',
+                style: const TextStyle(color: Colors.black),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  _selectedIndex = 3;
+                });
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.logout, color: Colors.red),
+              title: Text(
+                isEnglish ? 'Logout' : 'ออกจากระบบ',
+                style: const TextStyle(color: Colors.red),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  _selectedIndex = 4;
+                });
+              },
+            ),
+            SizedBox(height: 30),
+            Container(
+              margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(
+                    color: Colors.black,
+                    width: 1,
+                  ),
+                ),
+              ),
+            ),
+            Spacer(),
+            // Social media icons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.facebook),
+                  onPressed: () {
+                    // Add Facebook link code here
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.alternate_email_outlined),
+                  onPressed: () {
+                    // Add Twitter link code here
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.facebook),
+                  onPressed: () {
+                    // Add Instagram link code here
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
-      body: ListView.builder(
-        itemCount: machines.length,
-        itemBuilder: (context, index) {
-          var machine = machines[index];
-          return ListTile(
-            title: Text('Machine ${machine['id']}'),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('เหรียญที่ใส่ไป: ${machine['coins_inserted']}'),
-                Text('เวลาเหลือ: ${machine['time_left']} นาที'),
-                Text('สถานะ: ${machine['status']}'),
-              ],
+      appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.blue[300]!, Colors.blue[500]!],
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
             ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  child: machine['status'] == 'ใช้งานอยู่' &&
-                          machine['time_left'] <= 1
-                      ? Icon(Icons.notifications_active)
-                      : Container(),
-                ),
-                Container(
-                  child: ElevatedButton(
-                    onPressed: machine['time_left'] == 0
-                        ? () {
-                            setState(() {
-                              insertCoin(machine['id']);
-                            });
-                          }
-                        : null,
-                    child: Text(machine['time_left'] == 0
-                        ? 'ใส่เหรียญ'
-                        : machine['status']),
-                  ),
-                ),
-                Container(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        machine['time_left'] = 0.5;
-                        machine['coins_inserted'] = 3;
-                        machine['status'] = 'ใช้งานอยู่';
-                      });
-                    },
-                    child: Text('ทดสอบเวลาเหลือน้อยกว่า 1 นาที'),
-                  ),
-                ),
-                Container(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        machine['time_left'] = 0;
-                        machine['coins_inserted'] = 0;
-                        machine['status'] = 'สามารถใช้งานได้';
-                      });
-                    },
-                    child: Text('ทดสอบเครื่องทำงานเสร็จ'),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
+          ),
+        ),
+        title: Text('LANDNES'),
+      ),
+      body: Center(
+        child: _selectedIndex == 0
+            ? Text('Home Screen')
+            : _selectedIndex == 1
+                ? Text('Search Screen')
+                : _selectedIndex == 2
+                    ? Text('Notifications Screen')
+                    : Text('Profile Screen'),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.blue[400],
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.white,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.pin_drop),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications),
+            label: 'Notifications',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
     );
   }

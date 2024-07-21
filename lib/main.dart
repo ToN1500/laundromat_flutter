@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:laundromat_flutter/language_povider.dart';
+import 'package:laundromat_flutter/screen/home_screen.dart';
 import 'package:laundromat_flutter/screen/login_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => LanguageProvider(),
+      child: const MyApp(),
+    ),);
 }
 
 class MyApp extends StatelessWidget {
