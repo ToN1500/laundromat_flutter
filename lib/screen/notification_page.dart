@@ -83,7 +83,7 @@ class NotificationPage extends StatelessWidget {
                             Column(
                             
                               children: [
-                                Text('ดูการแจ้งเตือนผ่านกลุ่มไลน์สาขานี้'),
+                                Text(isEnglish ? 'Check notifications through this branch Line group.' : 'ดูการแจ้งเตือนผ่านกลุ่มไลน์สาขานี้'),
                                 Image(
                                   height: 150,
                                   width: 150,
