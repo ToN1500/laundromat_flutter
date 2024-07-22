@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../language_povider.dart';
 
-class ReportScreen extends StatelessWidget {
-  const ReportScreen({super.key});
+class SettingScreen extends StatelessWidget {
+  const SettingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,10 +12,10 @@ class ReportScreen extends StatelessWidget {
     final isEnglish = languageProvider.isEnglish;
     return Scaffold(
       appBar: AppBar(
-        title:  Text(isEnglish ? 'Report' : 'รายงาน'),
+        title:  Text(isEnglish ? 'Setting' : 'ตั้งค่า'),
       ),
       body:  Center(
-        child: Text(isEnglish ? 'Report Screen' : 'หน้ารายงาน'),
+        child: Text(isEnglish ? 'Setting Screen' : 'หน้าตั้งค่า'),
       ),
     );
   }

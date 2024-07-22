@@ -43,4 +43,6 @@ class MachinePovider extends ChangeNotifier {
   // status: 3 = ซ่อมบำรุง , maintain
 
   List<Map<String, dynamic>> get machines => _machines;
+
+  
 }

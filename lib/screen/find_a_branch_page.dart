@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../language_povider.dart';
 
 class FindABranchPage extends StatefulWidget {
   const FindABranchPage({super.key});
@@ -10,9 +13,11 @@ class FindABranchPage extends StatefulWidget {
 class _FindABranchPageState extends State<FindABranchPage> {
   @override
   Widget build(BuildContext context) {
+    final languageProvider = Provider.of<LanguageProvider>(context);
+    final isEnglish = languageProvider.isEnglish;
     return Scaffold(
-      body: Container(
-        child : Text('Find a Branch Page'),
+      body: Center(
+        child : Text(isEnglish ? 'Find A Branch Page' : 'หน้าค้นหาสาขา'),
       )
     );
   }

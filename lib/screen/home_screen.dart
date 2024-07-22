@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:laundromat_flutter/screen/Notification_page.dart';
 import 'package:laundromat_flutter/screen/find_a_branch_page.dart';
 import 'package:laundromat_flutter/screen/home_page.dart';
+import 'package:laundromat_flutter/screen/login_screen.dart';
 import 'package:laundromat_flutter/screen/report_screen.dart';
+import 'package:laundromat_flutter/screen/setting_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../language_povider.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  var index = 0;
+  HomeScreen({
+    super.key,
+    required this.index,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -16,6 +22,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.index;
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -133,10 +144,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: const TextStyle(color: Colors.black),
               ),
               onTap: () {
-                Navigator.pop(context);
-                setState(() {
-                  _selectedIndex = 1;
-                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SettingScreen()),
+                );
               },
             ),
             ListTile(
@@ -146,10 +157,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: const TextStyle(color: Colors.red),
               ),
               onTap: () {
-                Navigator.pop(context);
-                setState(() {
-                  _selectedIndex = 4;
-                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                );
               },
             ),
             SizedBox(height: 30),
@@ -176,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.alternate_email_outlined),
+                  icon: Icon(Icons.facebook),
                   onPressed: () {
                     // Add Twitter link code here
                   },
@@ -206,19 +217,18 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text('LANDNES'),
       ),
       body: Center(
-        child: _selectedIndex == 0
-            ? HomePage()
-            : _selectedIndex == 1
-                ? FindABranchPage()
-                : _selectedIndex == 2
-                    ? NotificationPage()
-                    : null
-      ),
+          child: _selectedIndex == 0
+              ? HomePage()
+              : _selectedIndex == 1
+                  ? FindABranchPage()
+                  : _selectedIndex == 2
+                      ? NotificationPage()
+                      : null),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.blue[400],
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.white,
-        items:  <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: isEnglish ? 'Home' : 'หน้าหลัก',
