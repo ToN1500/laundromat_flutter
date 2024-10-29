@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
           bottomNavigationBarTheme: BottomNavigationBarThemeData(
-              backgroundColor: Colors.transparent, elevation: 0.5)),
+              backgroundColor: Colors.red, elevation: 0.0)),
       home: StartScreen(),
     );
   }
