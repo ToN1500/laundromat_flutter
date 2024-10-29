@@ -4,14 +4,14 @@ import 'package:laundromat_flutter/language_povider.dart';
 import 'package:laundromat_flutter/screen/login_screen.dart';
 import 'package:provider/provider.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   final _username = TextEditingController();
   final _password_frist = TextEditingController();
   final _password_second = TextEditingController();
@@ -58,7 +58,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
-                        'images/logo.png',
+                        'assets/images/logo.png',
                         width: 200,
                         height: 200,
                         fit: BoxFit.cover,

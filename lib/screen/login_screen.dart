@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:laundromat_flutter/language_povider.dart';
-import 'package:provider/provider.dart';
-import 'register_screen.dart';
-import 'home_screen.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:laundromat_flutter/screen/forgotpassword_screen.dart';
+import 'package:laundromat_flutter/screen/home_screen.dart';
+import 'package:laundromat_flutter/screen/signup_screen.dart';
+import 'package:laundromat_flutter/screen/widgets/passwordtextfield.dart';
+import 'package:laundromat_flutter/screen/widgets/usernametextfield.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,186 +14,389 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _username = TextEditingController();
-  final _password = TextEditingController();
-  bool _obscureText = true;
-
   @override
   Widget build(BuildContext context) {
-    final languageProvider = Provider.of<LanguageProvider>(context);
-    final isEnglish = languageProvider.isEnglish;
-
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.blue[200]!, Colors.blue[500]!],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+      body: Center(
+        child: Container(
+          width: 360,
+          height: 799,
+          padding: const EdgeInsets.only(
+            top: 80,
+            left: 28,
+            right: 28,
+            bottom: 40,
           ),
-        ),
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.only(
-                  top: 10, bottom: 0, right: 10, left: 10),
-              alignment: Alignment.topRight,
-              child: PopupMenuButton<String>(
-                onSelected: (String value) {
-                  languageProvider.setLanguage(value == 'English');
-                },
-                itemBuilder: (BuildContext context) {
-                  return {'ไทย', 'English'}.map((String choice) {
-                    return PopupMenuItem<String>(
-                      value: choice,
-                      child: Text(choice),
-                    );
-                  }).toList();
-                },
-                icon: const Icon(Icons.language, color: Colors.white),
-              ),
-            ),
-            Expanded(
-              child: Center(
-                child: SingleChildScrollView(
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Image.asset(
-                        'images/logo.png',
-                        width: 200,
-                        height: 200,
-                        fit: BoxFit.cover,
-                      ),
-                      const SizedBox(height: 50),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Text(
-                          isEnglish ? 'Please Login' : 'โปรดเข้าสู่ระบบ',
-                          style: const TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
+                      Text(
+                        'Welcome!',
+                        style: TextStyle(
+                          color: Color(0xFF2167A7),
+                          fontSize: 24,
+                          fontFamily: 'Kanit',
+                          fontWeight: FontWeight.w500,
+                          height: 0,
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 30, vertical: 10),
-                        child: TextFormField(
-                          controller: _username,
-                          decoration: InputDecoration(
-                            prefixIcon:
-                                const Icon(Icons.person, color: Colors.white),
-                            labelText: isEnglish ? 'Username' : 'ผู้ใช้งานระบบ',
-                            labelStyle: const TextStyle(color: Colors.white),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: const BorderSide(color: Colors.white),
-                            ),
-                            fillColor: Colors.white.withOpacity(0.1),
-                            filled: true,
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: const BorderSide(color: Colors.white),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: const BorderSide(color: Colors.white),
+                      Text(
+                        'Sign in to continue',
+                        style: TextStyle(
+                          color: Colors.black.withOpacity(0.5),
+                          fontSize: 16,
+                          fontFamily: 'Kanit',
+                          fontWeight: FontWeight.w300,
+                          height: 0,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Container(
+                  width: 200,
+                  height: 200,
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        left: 20.30,
+                        top: 20.79,
+                        child: Opacity(
+                          opacity: 0.10,
+                          child: Container(
+                            width: 159.41,
+                            height: 159.41,
+                            decoration: ShapeDecoration(
+                              color: Color(0xFF2167A7),
+                              shape: OvalBorder(),
                             ),
                           ),
-                          style: const TextStyle(color: Colors.white),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 30, vertical: 10),
-                        child: TextFormField(
-                          controller: _password,
-                          obscureText: _obscureText,
-                          decoration: InputDecoration(
-                            prefixIcon:
-                                const Icon(Icons.password, color: Colors.white),
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                _obscureText
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                                color: Colors.white,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _obscureText = !_obscureText;
-                                });
-                              },
-                            ),
-                            labelText: isEnglish ? 'Password' : 'รหัสผ่าน',
-                            labelStyle: const TextStyle(color: Colors.white),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: const BorderSide(color: Colors.white),
-                            ),
-                            fillColor: Colors.white.withOpacity(0.1),
-                            filled: true,
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: const BorderSide(color: Colors.white),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: const BorderSide(color: Colors.white),
+                      Positioned(
+                        left: 0,
+                        top: 0,
+                        child: Opacity(
+                          opacity: 0.10,
+                          child: Container(
+                            width: 200,
+                            height: 200,
+                            decoration: ShapeDecoration(
+                              color: Color(0xFF2167A7),
+                              shape: OvalBorder(),
+                              shadows: [
+                                BoxShadow(
+                                  color: Color(0xFF00EFFF),
+                                  blurRadius: 100,
+                                  offset: Offset(0, 0),
+                                  spreadRadius: 0,
+                                )
+                              ],
                             ),
                           ),
-                          style: const TextStyle(color: Colors.white),
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HomeScreen(
-                                index: 0,
-                              ),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          isEnglish ? 'Login' : 'เข้าสู่ระบบ',
-                          style: GoogleFonts.prompt(
-                              fontSize: 15, color: Colors.blue),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => RegisterScreen(),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          isEnglish ? 'Create Account' : 'สร้างบัญชี',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            decoration: TextDecoration.underline,
+                      Positioned(
+                        left: 36.14,
+                        top: 36.63,
+                        child: Container(
+                          width: 126.73,
+                          height: 126.73,
+                          clipBehavior: Clip.antiAlias,
+                          decoration: BoxDecoration(),
+                          child: SvgPicture.asset(
+                            'assets/images/Laundry_login.svg',
                           ),
                         ),
                       ),
                     ],
                   ),
                 ),
-              ),
+                const SizedBox(height: 20),
+                Container(
+                  width: double.infinity,
+                  height: 183,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        height: 90,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            UsernameTextField(
+                              hintText: 'กรุณากรอกชื่อผู้ใข้งาน',
+                              // controller: _passwordController,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'กรุณากรอกชื่อผู้ใข้งาน';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 10),
+                            PasswordTextField(
+                              hintText: 'กรุณากรอกรหัสผ่าน',
+                              // controller: _passwordController,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'กรุณากรอกรหัสผ่าน';
+                                }
+                                return null;
+                              },
+                            )
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 18),
+                      Container(
+                        width: double.infinity,
+                        height: 75,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => HomeScreen(),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                height: 44,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 24),
+                                decoration: ShapeDecoration(
+                                  color: Color(0xFF2267A8),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  shadows: [
+                                    BoxShadow(
+                                      color: Color(0xFF9ED0FF),
+                                      blurRadius: 10,
+                                      offset: Offset(0, 4),
+                                      spreadRadius: 0,
+                                    )
+                                  ],
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'LOGIN',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontFamily: 'Kanit',
+                                        fontWeight: FontWeight.w400,
+                                        height: 0,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ForgotpasswordScreen(),
+                                  ),
+                                );
+                              },
+                              child: SizedBox(
+                                width: double.infinity,
+                                child: Text(
+                                  'Forgot Password?',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Color(0xFF2167A7),
+                                    fontSize: 14,
+                                    fontFamily: 'Kanit',
+                                    fontWeight: FontWeight.w300,
+                                    height: 0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Container(
+                  width: double.infinity,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          decoration: ShapeDecoration(
+                            color:
+                                Colors.black.withOpacity(0.30000001192092896),
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                width: 1,
+                                strokeAlign: BorderSide.strokeAlignCenter,
+                                color: Colors.black
+                                    .withOpacity(0.30000001192092896),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        'or',
+                        style: TextStyle(
+                          color: Colors.black.withOpacity(0.30000001192092896),
+                          fontSize: 16,
+                          fontFamily: 'Kanit',
+                          fontWeight: FontWeight.w300,
+                          height: 0,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Container(
+                          decoration: ShapeDecoration(
+                            color:
+                                Colors.black.withOpacity(0.30000001192092896),
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                width: 1,
+                                strokeAlign: BorderSide.strokeAlignCenter,
+                                color: Colors.black
+                                    .withOpacity(0.30000001192092896),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  child: Text(
+                    'Social Media Login',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.black.withOpacity(0.5),
+                      fontSize: 14,
+                      fontFamily: 'Kanit',
+                      fontWeight: FontWeight.w300,
+                      height: 0,
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(30),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 32,
+                        height: 32,
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(),
+                        child: SvgPicture.asset(
+                          'assets/images/Google.svg',
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      Container(
+                        width: 32,
+                        height: 32,
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(),
+                        child: SvgPicture.asset(
+                          'assets/images/Facebook.svg',
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      Container(
+                        width: 32,
+                        height: 32,
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(),
+                        child: SvgPicture.asset(
+                          'assets/images/Line.svg',
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      Container(
+                        width: 32,
+                        height: 32,
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(),
+                        child: SvgPicture.asset(
+                          'assets/images/Apple logo.svg',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("Don't have an account?"),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignUpScreen(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        "Sign Up",
+                        style: TextStyle(color: Color(0xFF2167A7)),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

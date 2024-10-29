@@ -1,8 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:laundromat_flutter/language_povider.dart';
 import 'package:laundromat_flutter/machine_povider.dart';
-import 'package:laundromat_flutter/screen/login_screen.dart';
+import 'package:laundromat_flutter/screen/start_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -26,10 +25,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: LoginScreen(),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+          bottomNavigationBarTheme: BottomNavigationBarThemeData(
+              backgroundColor: Colors.transparent, elevation: 0.5)),
+      home: StartScreen(),
     );
   }
 }
