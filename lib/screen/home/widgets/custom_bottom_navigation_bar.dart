@@ -36,6 +36,10 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       icon: 'assets/images/User.svg',
       label: 'โปรไฟล์',
     ),
+    _NavItem(
+      icon: 'assets/images/Setting.svg',
+      label: 'ตั้งค่า',
+    )
   ];
 
   @override

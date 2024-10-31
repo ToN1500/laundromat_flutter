@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:laundromat_flutter/screen/forgotpassword_screen.dart';
 import 'package:laundromat_flutter/screen/home_screen.dart';
 import 'package:laundromat_flutter/screen/signup_screen.dart';
 import 'package:laundromat_flutter/screen/widgets/passwordtextfield.dart';
 import 'package:laundromat_flutter/screen/widgets/usernametextfield.dart';
+import 'package:laundromat_flutter/service/auth/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,6 +18,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
+    final authService = Get.find<AuthService>();
+
     return Scaffold(
       body: Center(
         child: Container(
@@ -176,12 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => HomeScreen(),
-                                  ),
-                                );
+                                authService.login('test@test.com', 'password');
                               },
                               child: Container(
                                 width: double.infinity,

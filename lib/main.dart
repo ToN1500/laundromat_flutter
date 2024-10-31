@@ -1,35 +1,56 @@
+// main.dart
 import 'package:flutter/material.dart';
-import 'package:laundromat_flutter/language_povider.dart';
-import 'package:laundromat_flutter/machine_povider.dart';
-import 'package:laundromat_flutter/screen/start_screen.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:laundromat_flutter/config/router/router.dart';
+import 'package:laundromat_flutter/config/theme/theme.dart';
+import 'package:laundromat_flutter/model/favpoke_model.dart';
+import 'package:laundromat_flutter/service/auth/auth_service.dart';
 
-void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => LanguageProvider()),
-        ChangeNotifierProvider(create: (context) => MachinePovider()),
-      ],
-      child: const MyApp(),
-    ),
-  );
+// Future<void> main() async {
+//   final authService = Get.put(AuthService());
+//   final router = AppRouter(authService).router;
+
+//   // ต้องเริ่มต้น Hive ก่อนใช้งาน
+//   await Hive.initFlutter();
+
+//   // เปิด box - box คือที่เก็บข้อมูลคล้าย collection
+//   await Hive.openBox('favPoke');
+
+//   runApp(MyApp(router: router));
+// }
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final authService = Get.put(AuthService());
+  final router = AppRouter(authService).router;
+
+  // Initialize Hive
+  await Hive.initFlutter();
+
+  // Register Adapter
+  if (!Hive.isAdapterRegistered(FavpokeModelAdapter().typeId)) {
+    Hive.registerAdapter(FavpokeModelAdapter());
+  }
+
+  // Open the box once
+  // await Hive.openBox<FavpokeModel>('favpoke');
+
+  runApp(MyApp(router: router));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final GoRouter router;
 
-  // This widget is the root of your application.
+  const MyApp({super.key, required this.router});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-          bottomNavigationBarTheme: BottomNavigationBarThemeData(
-              backgroundColor: Colors.red, elevation: 0.0)),
-      home: StartScreen(),
+    return MaterialApp.router(
+      routerConfig: router,
+      title: 'Auth Demo',
+      theme: appTheme(),
     );
   }
 }
